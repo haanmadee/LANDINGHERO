@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hero Onboarding Fit Screen</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Lora', serif;
+        }
+
+        body {
+            background: transparent;
+            /* Memaksa body setinggi layar HP, tidak lebih */
+            height: 100vh; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            overflow: hidden; /* Kunci anti-scrolling */
+            color: #000000;
+        }
+
+        /* Container Utama */
+        .mobile-container {
+            width: 100%;
+            height: 100%; /* Full tinggi layar */
+            max-width: 480px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Komponen disebar (atas, tengah, bawah) */
+        }
+
+        /* --- 1. Bagian Foto (Flexible Height) --- */
+        .hero-image-container {
+            /* Flex 1: Mengambil sisa ruang kosong sebanyak mungkin */
+            flex: 1; 
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* Gambar nempel ke bawah container ini (ke arah teks) */
+            position: relative;
+            overflow: hidden; /* Potong jika gambar kegedean */
+            z-index: 1;
+            /* Margin negatif agar gambar sedikit masuk ke kotak teks */
+            margin-bottom: -25px; 
+        }
+
+        .hero-image {
+            /* Agar gambar pas dalam area flex tanpa scrolling */
+            width: auto;
+            height: 100%; 
+            max-width: 100%;
+            /* Object fit contain: Gambar utuh terlihat, tidak terpotong */
+            object-fit: contain; 
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));
+            /* Sedikit padding atas biar gak nempel banget sama langit2 HP */
+            padding-top: 10px; 
+        }
+
+        /* Wrapper Bawah (Card + Button) */
+        .bottom-section {
+            width: 100%;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Padding bawah untuk jarak aman tombol dari ujung layar */
+            padding-bottom: 20px; 
+        }
+
+        /* --- 2. Card Teks (Rounded Box) --- */
+        .text-card {
+            background: #f6fafd; /* Warna kotak teks */
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            border-bottom-left-radius: 25px; /* Tambahan rounded bawah */
+            border-bottom-right-radius: 25px; /* Tambahan rounded bawah */
+            
+            width: 92%; /* Tidak full 100% agar terlihat "floating" sedikit */
+            padding: 18px 20px 14px 20px; /* Padding disesuaikan */
+            
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            text-align: center;
+            margin-bottom: 15px; /* Jarak antara Kotak Teks dan Tombol */
+        }
+
+        /* --- Typography (Disesuaikan biar Rapet) --- */
+        .slide-content h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px; /* Ukuran font sedikit dikecilkan untuk mobile */
+            font-weight: 700;
+            margin-bottom: 5px; /* Jarak judul ke deskripsi dirapetin */
+            color: #000000;
+            letter-spacing: 0.3px;
+            line-height: 1; /* Line height dirapetin */
+        }
+
+        .slide-content p {
+            font-family: 'Lora', serif;
+            font-size: 14px; /* Font body pas untuk mobile */
+            line-height: 1.5;
+            color: #333; 
+            margin-bottom: 5px;
+            padding: 0 2px;
+            /* Batasi jumlah baris teks jika kepanjangan (opsional) */
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Styling Slider */
+        .swiper {
+            width: 100%;
+            padding-bottom: 25px; /* Ruang untuk dots */
+        }
+
+        .swiper-pagination-bullet {
+            background: #cbd5e1;
+            width: 6px;
+            height: 6px;
+        }
+        
+        .swiper-pagination-bullet-active {
+            background: #000000;
+            width: 16px;
+            border-radius: 4px;
+        }
+
+        /* --- 3. Area Tombol (Di Luar Kotak) --- */
+        .btn-wrapper {
+            width: 92%; /* Samakan lebar dengan card */
+            display: flex;
+            flex-direction: column; /* Tombol akan disusun vertikal secara default */
+            gap: 8px; /* Jarak antar tombol (vertikal) dibuat sedikit lebih kecil */
+        }
+        
+        .top-btns {
+            display: flex;
+            gap: 8px; /* Jarak antara tombol "Get Started" dan "For Kids" (horizontal) */
+        }
+
+        /* Styling Tombol CTA Utama (Gradient Biru) - Dibuat Minimalis */
+        .btn-cta {
+            flex: 1; /* Agar tombol "Get Started" dan "For Kids" berbagi ruang secara merata */
+            width: 100%; /* Untuk tombol Support Me yang full width */
+            /* PADDING DIKECILKAN UNTUK MEMBUAT TOMBOL PENDEK */
+            padding: 12px; 
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #141e3d, #243b55); /* Gradient Biru */
+            color: white;
+            font-family: 'Playfair Display', serif;
+            /* UKURAN FONT DIKECILKAN */
+            font-size: 14px; 
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            /* SHADOW DIKECILKAN UNTUK EFEK LEBIH MINIMALIS */
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15); 
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .btn-cta:active {
+            transform: scale(0.98);
+        }
+
+        /* Styling Tombol Support Me (Warna Oranye) */
+        .btn-support {
+            /* Inherit semua gaya dari .btn-cta, hanya ganti warna dan shadow */
+            background: #ffaf00; /* Warna Oranye */
+            background-image: none;
+            box-shadow: 0 3px 10px rgba(255,175,0,0.3); /* Shadow disesuaikan */
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        
+        <div class="hero-image-container">
+            <img src="https://cdn.lynkid.my.id/draft-products/08-12-2025/1765173210157_4739504.png" alt="Mommy Mentor Photo" class="hero-image">
+        </div>
+
+        <div class="bottom-section">
+            
+            <div class="text-card">
+                <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                        
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <h2>Kerja Remote Sambil Momong?</h2>
+                                <p>Bisa banget! Aku sharing caraku menyeimbangkan karir dari rumah tanpa kehilangan momen emas bareng si kecil.</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <h2>Mentoring Remote Worker</h2>
+                                <p>Aku bimbing personal dari nol sampai siap dapat klien pertama. Belajar skill digital fleksibel dari rumah.</p>
+                            </div>
+                        </div>
+
+                        <div class="swiper-slide">
+                            <div class="slide-content">
+                                <h2>Produk Favorit Si Kecil</h2>
+                                <p>Rekomendasi produk edukatif terbaik pilihan mommy untuk tumbuh kembang anak kita.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+
+            <div class="btn-wrapper">
+                <div class="top-btns">
+                    <button class="btn-cta" onclick="window.open('https://link-ke-get-started.com', '_blank')">Get Started!</button>
+                    <button class="btn-cta" onclick="window.open('https://link-ke-for-kids.com', '_blank')">For Kids</button>
+                </div>
+                
+                <button class="btn-cta btn-support" onclick="window.open('https://link-ke-support-me.com', '_blank')">Support me</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            speed: 600,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            autoplay: {
+                delay: 4000,
+                disableOnInteraction: false,
+            },
+        });
+    </script>
+</body>
+</html>
