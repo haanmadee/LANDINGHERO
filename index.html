@@ -140,36 +140,41 @@
             width: 92%; /* Samakan lebar dengan card */
             display: flex;
             flex-direction: column; /* Tombol akan disusun vertikal secara default */
-            gap: 8px; /* Jarak antar tombol (vertikal) dibuat sedikit lebih kecil */
+            gap: 8px; /* Jarak antar baris tombol */
         }
         
+        /* Baris Tombol Atas (3 Kolom) */
         .top-btns {
-            display: flex;
-            gap: 8px; /* Jarak antara tombol "Get Started" dan "For Kids" (horizontal) */
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Membagi 3 kolom sama rata */
+            gap: 8px; /* Jarak antar tombol */
+            width: 100%;
         }
 
         /* Styling Tombol CTA Utama (Gradient Biru) - Dibuat Minimalis */
         .btn-cta {
-            flex: 1; /* Agar tombol "Get Started" dan "For Kids" berbagi ruang secara merata */
-            width: 100%; /* Untuk tombol Support Me yang full width */
+            width: 100%; /* Full width mengikuti grid/flex parent */
             /* PADDING DIKECILKAN UNTUK MEMBUAT TOMBOL PENDEK */
-            padding: 12px; 
+            padding: 10px 4px; /* Padding kiri-kanan kecil agar teks muat */
             border: none;
             border-radius: 50px;
             background: linear-gradient(90deg, #141e3d, #243b55); /* Gradient Biru */
             color: white;
             font-family: 'Playfair Display', serif;
-            /* UKURAN FONT DIKECILKAN */
-            font-size: 14px; 
+            /* UKURAN FONT DIKECILKAN UNTUK 3 KOLOM */
+            font-size: 12px; 
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             cursor: pointer;
             /* SHADOW DIKECILKAN UNTUK EFEK LEBIH MINIMALIS */
             box-shadow: 0 3px 10px rgba(0,0,0,0.15); 
             transition: transform 0.2s ease;
             text-decoration: none;
             text-align: center;
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap; /* Mencegah teks turun baris */
         }
 
         .btn-cta:active {
@@ -182,6 +187,8 @@
             background: #ffaf00; /* Warna Oranye */
             background-image: none;
             box-shadow: 0 3px 10px rgba(255,175,0,0.3); /* Shadow disesuaikan */
+            font-size: 14px; /* Font size tombol bawah sedikit lebih besar */
+            padding: 12px;
         }
 
     </style>
@@ -228,8 +235,9 @@
 
             <div class="btn-wrapper">
                 <div class="top-btns">
-                    <button class="btn-cta" onclick="window.open('https://lynk.id/ajengwahys/page/page', '_blank')">Get Started!</button>
-                    <button class="btn-cta" onclick="window.open('https://lynk.id/ajengwahys/page/trial', '_blank')">For Kids</button>
+                    <button class="btn-cta" onclick="window.open('https://lynk.id/ajengwahys/page/page', '_blank')">Work</button>
+                    <button class="btn-cta" onclick="window.open('https://lynk.id/ajengwahys/page/branding', '_blank')">Branding</button>
+                    <button class="btn-cta" onclick="window.open('https://lynk.id/ajengwahys/page/trial', '_blank')">Kids</button>
                 </div>
                 
                 <button class="btn-cta btn-support" onclick="window.open('https://lynk.id/ajengwahys/zzy4wvm4nx2k', '_blank')">Support me</button>
@@ -258,5 +266,3 @@
     </script>
 </body>
 </html>
-
-
